@@ -249,6 +249,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 122084, guid: 90ffaa7a34cb9b7479249dc457bb07c6, type: 3}
+  minesCount: 10
+  mines: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +472,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &922210945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 922210946}
+  - component: {fileID: 922210947}
+  m_Layer: 0
+  m_Name: Empty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &922210946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922210945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &922210947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922210945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf6590497d6eb94890028761f2f21ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unrevealed: {fileID: 21300000, guid: e0c7999a2bc9cdc4d9a25bfff5542fb4, type: 3}
+  revealed: {fileID: 21300000, guid: 7ed63fdd2fc5ef848bff7765cd160f49, type: 3}
+  flag: {fileID: 21300000, guid: 7f5d580dc4a7c57448f27b5149f72b43, type: 3}
+  mine: {fileID: 21300000, guid: a2d5046dda06e7b40acd59b8476b7c6a, type: 3}
+  ooh: {fileID: 21300000, guid: d6cb43987f48da544b3ef42a271878d4, type: 3}
+  faceOk: {fileID: 21300000, guid: 914910b9e3707dd40b3137c46549606c, type: 3}
+  faceOoh: {fileID: 21300000, guid: 8378512fd116e5342bd08d969176a256, type: 3}
+  faceDead: {fileID: 21300000, guid: 85661f72208a7d244b761bf97b5cd763, type: 3}
+  faceWow: {fileID: 21300000, guid: a028456a7ef995c41986e3bc5d422137, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -477,3 +532,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 459107726}
+  - {fileID: 922210946}
