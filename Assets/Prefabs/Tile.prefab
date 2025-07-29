@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe0211d3800dcc4abe30a2c95da1fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fontPrefab: {fileID: 22443998, guid: 0370b7de7702d124ca31a0a7bd690b8b, type: 3}
   isMine: 0
   mouseOver: 0
   x: 0

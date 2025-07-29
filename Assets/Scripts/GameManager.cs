@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
         }
         
         Reset();
+        
+        CountNearbyMines();
     }
 
     // 随机放置地雷
@@ -55,5 +57,44 @@ public class GameManager : MonoBehaviour
             // 用于游戏失败时地雷的全部显示
             mines.Add(mineTile);
         }
+    }
+
+    // 统计周围的地雷数
+    private void CountNearbyMines()
+    {
+        for (int j = 0; j < TilesRow; j++)
+        {
+            for (int i = 0; i < TilesCol; i++)
+            {
+                Tile tile = grid[j, i];
+                if(tile.isMine)
+                    continue;
+                tile.nearbyMines = CountOneTile(tile);
+            }
+        }
+    }
+
+    // 统计一个格子周围的地雷数
+    private int CountOneTile(Tile tile)
+    {
+        int count = 0;
+        
+        for (int j = -1; j <= 1; j++)
+        {
+            for (int i = -1; i <= 1; i++)
+            {
+                if (j == 0 && i == 0)
+                    continue;
+                
+                (int newJ, int newI) = (tile.y + j, tile.x + i);
+                if (newJ < 0 || newI < 0 || newJ >= TilesRow || newI >= TilesCol)
+                    continue;
+                
+                if (grid[newJ, newI].isMine)
+                    count++;
+            }
+        }
+        
+        return count;
     }
 }
