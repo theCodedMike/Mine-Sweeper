@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject tilePrefab;
     [Header("地雷个数")]
     public int minesCount;
+    [Header("计时(单位为秒)")]
+    public int playTime;
 
     private const int TileSize = 32;
     public const int TilesRow = 10;
@@ -15,9 +19,14 @@ public class GameManager : MonoBehaviour
     public static Tile[,] grid = new Tile[TilesRow, TilesCol];
     public static List<Tile> mines = new();
 
+
+    private MinesLeft _minesLeft;
+    private TimeLeft _timeLeft;
+
     private void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        _minesLeft = FindFirstObjectByType<MinesLeft>();
+        _timeLeft = FindFirstObjectByType<TimeLeft>();
         
         for (int j = 0; j < TilesRow; j++)
         {
@@ -33,6 +42,8 @@ public class GameManager : MonoBehaviour
         Reset();
         
         CountNearbyMines();
+        
+        InitData();
     }
 
     // 随机放置地雷
@@ -54,7 +65,7 @@ public class GameManager : MonoBehaviour
                 mineTile = grid[Random.Range(0, TilesRow), Random.Range(0, TilesCol)];
             } while (mineTile.isMine);
             // 添加地雷
-            mineTile.SetMine();
+            mineTile.MarkAsMine();
             // 用于游戏失败时地雷的全部显示
             mines.Add(mineTile);
         }
@@ -97,5 +108,38 @@ public class GameManager : MonoBehaviour
         }
         
         return count;
+    }
+
+
+    // 初始化部分数据
+    private void InitData()
+    {
+        _minesLeft.SetTotal(minesCount);
+        _timeLeft.SetTotal(playTime);
+    }
+
+    private void Update()
+    {
+        if(!gameOver)
+            CheckGameOver();
+    }
+
+    private void CheckGameOver()
+    {
+        int revealedCount = 0;
+        for (int j = 0; j < TilesRow; j++)
+        {
+            for (int i = 0; i < TilesCol; i++)
+            {
+                if (grid[j, i].state == State.Revealed)
+                    revealedCount++;
+            }
+        }
+
+        if (revealedCount == (TilesRow * TilesCol - minesCount))
+        {
+            gameOver = true;
+            print("游戏结束...");
+        }
     }
 }

@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
 {
     [Header("字体")] 
     public Transform fontPrefab;
-    private State _state = State.Unrevealed;
+    public State state = State.Unrevealed;
     private SpriteRenderer _renderPhoto;
 
     public bool isMine;
@@ -20,6 +20,8 @@ public class Tile : MonoBehaviour
     public int x, y;
     private Text _mineCount;
     public int nearbyMines; //周围的地雷数
+    private MinesLeft _minesLeft;
+    private TimeLeft _timeLeft;
 
     private void Start()
     {
@@ -30,14 +32,17 @@ public class Tile : MonoBehaviour
             new Vector3(transform.position.x + 16, transform.position.y + 16, -3), Quaternion.identity);
         textObj.SetParent(transform);
         _mineCount = textObj.GetComponent<Text>();
+        _minesLeft = FindFirstObjectByType<MinesLeft>();
+        _timeLeft = FindFirstObjectByType<TimeLeft>();
     }
 
     // 每个方块都需要初始化
     public void Reset()
     {
-        _state = State.Unrevealed;
+        state = State.Unrevealed;
         isMine = false;
         mouseOver = false;
+        nearbyMines = 0;
 
         if (_renderPhoto != null)
             _renderPhoto.sprite = Photo.instance.unrevealed;
@@ -53,7 +58,7 @@ public class Tile : MonoBehaviour
     }
 
     // 设置炸弹
-    public void SetMine()
+    public void MarkAsMine()
     {
         isMine = true;
     }
@@ -80,9 +85,9 @@ public class Tile : MonoBehaviour
     // 揭示瓦片
     public void Reveal()
     {
-        if (_state == State.Revealed || _state == State.Flag)
+        if (state == State.Revealed || state == State.Flag)
             return;
-        _state = State.Revealed;
+        state = State.Revealed;
 
         if (isMine)
         {
@@ -111,9 +116,12 @@ public class Tile : MonoBehaviour
     private void GameOver()
     {
         GameManager.gameOver = true;
+        // 暂停计时
+        _timeLeft.Pause();
+        // 把所有未揭示的炸弹全部揭示
         foreach (Tile mine in GameManager.mines)
         {
-            mine._state = State.Revealed;
+            mine.state = State.Revealed;
             mine._renderPhoto.sprite = Photo.instance.mine;
         }
     }
@@ -124,23 +132,23 @@ public class Tile : MonoBehaviour
             return;
         
         if (mouseOver && Input.GetMouseButtonDown(1))
-        {
             MakeFlag();
-        }
     }
 
 
     // 鼠标右键单击标记小旗子
     private void MakeFlag()
     {
-        if (_state == State.Unrevealed)
+        if (state == State.Unrevealed)
         {
-            _state = State.Flag;
+            state = State.Flag;
             _renderPhoto.sprite = Photo.instance.flag;
-        } else if (_state == State.Flag)
+            _minesLeft.RemoveMine();
+        } else if (state == State.Flag)
         {
-            _state = State.Unrevealed;
+            state = State.Unrevealed;
             _renderPhoto.sprite = Photo.instance.unrevealed;
+            _minesLeft.AddMine();
         }
     }
 }
