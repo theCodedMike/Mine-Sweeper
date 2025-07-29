@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
     public int minesCount;
 
     private const int TileSize = 32;
-    private const int TilesRow = 10;
-    private const int TilesCol = 10;
+    public const int TilesRow = 10;
+    public const int TilesCol = 10;
+    public static bool gameOver;
 
-    public Tile[,] grid = new Tile[TilesRow, TilesCol];
-    public List<Tile> mines = new();
+    public static Tile[,] grid = new Tile[TilesRow, TilesCol];
+    public static List<Tile> mines = new();
 
     private void Start()
     {
